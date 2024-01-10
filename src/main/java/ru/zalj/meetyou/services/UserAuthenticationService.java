@@ -23,9 +23,6 @@ public class UserAuthenticationService {
         if (usersRepository.existsByEmail(user.getUsername())) {
             throw new InvalidParameterException();
         }
-        if (usersRepository.existsByName(user.getName())) {
-            throw new InvalidParameterException();
-        }
 
         user.setBlocked(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

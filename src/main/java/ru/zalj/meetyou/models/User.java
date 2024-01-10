@@ -25,14 +25,14 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "blocked")
     private boolean blocked = false;
 
     @Column(name = "password", length = 1024)
     private String password;
+
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user")
+    private UserProfile userProfile;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_user"))
@@ -51,7 +51,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -82,12 +82,8 @@ public class User implements UserDetails {
         this.dateOfCreate = dateOfCreate;
     }
 
-    public void setEmail(String email) {
+    public void setUsername(String email) {
         this.email = email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setBlocked(boolean blocked) {
@@ -108,14 +104,6 @@ public class User implements UserDetails {
 
     public LocalDateTime getDateOfCreate() {
         return dateOfCreate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean isBlocked() {
