@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "usr")
+@Table(name = "t_users")
 public class User implements UserDetails {
 
     @Id
@@ -22,11 +22,11 @@ public class User implements UserDetails {
     @Column(name = "date_of_create")
     private LocalDateTime dateOfCreate;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "blocked")
-    private boolean blocked = false;
+    private boolean blocked = true;
 
     @Column(name = "password", length = 1024)
     private String password;
@@ -41,12 +41,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
+        return roles;
     }
 
     @Override
@@ -55,8 +50,13 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !blocked;
     }
 
     public void setId(Long id) {
@@ -82,7 +82,11 @@ public class User implements UserDetails {
         this.dateOfCreate = dateOfCreate;
     }
 
-    public void setUsername(String email) {
+    public void setUsername(String username) {
+        email = username;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -92,6 +96,10 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public void setRoles(Set<Role> roles) {
@@ -106,12 +114,16 @@ public class User implements UserDetails {
         return dateOfCreate;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public String getEmail() {
+        return email;
     }
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
     @PrePersist

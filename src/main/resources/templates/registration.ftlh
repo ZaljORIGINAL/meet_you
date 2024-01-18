@@ -8,7 +8,6 @@
 <body>
 <div>
     <form action="/registration" method="post">
-        <p>Имя пользователя: <input type="text" name="name"></p>
         <p>Электронная почта: <input type="email" name="email"></p>
         <p>Пароль: <input type="password" name="password"></p>
         <input type="hidden" name="_csrf" value="${_csrf.token}">

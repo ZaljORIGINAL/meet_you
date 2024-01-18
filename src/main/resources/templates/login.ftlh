@@ -8,7 +8,7 @@
 <body>
 <div>
     <form action="/login" method="post">
-        <label>Логин: <input type="text" name="username"></label>
+        <label>Логин: <input type="email" name="username"></label>
         <label>Пароль: <input type="password" name="password"></label>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Войти</button>

@@ -3,7 +3,7 @@ package ru.zalj.meetyou.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "personalitys")
+@Table(name = "t_personalitys")
 public class Personality {
 
     @Id

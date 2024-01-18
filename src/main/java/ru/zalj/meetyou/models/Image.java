@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Entity
-@Table(name = "images")
+@Table(name = "t_images")
 public class Image {
 
     @Id

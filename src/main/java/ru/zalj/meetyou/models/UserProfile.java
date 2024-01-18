@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "t_profiles")
 public class UserProfile {
     @Id
     private Long id;

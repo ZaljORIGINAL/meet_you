@@ -21,7 +21,7 @@ public class UserAuthenticationService {
 
     public User createUser(User user) {
         if (usersRepository.existsByEmail(user.getUsername())) {
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("Пользователь с данным email уже существует!");
         }
 
         user.setBlocked(false);

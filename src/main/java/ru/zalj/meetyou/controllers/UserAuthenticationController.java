@@ -28,7 +28,7 @@ public class UserAuthenticationController {
     @PostMapping("/registration")
     public String registerUser(User user) {
         userAuthenticationService.createUser(user);
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/lost_password")
