@@ -6,8 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Entity
-@Table(name = "t_images")
-public class Image {
+@Table(name = "t_users_photo")
+public class UserPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,13 +27,13 @@ public class Image {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private UserProfile userProfile;
 
-    public static Image instanceOf(MultipartFile file) throws IOException {
-        Image image = new Image();
-        image.setName(file.getName());
-        image.setOriginalFileName(file.getOriginalFilename());
-        image.setSize(file.getSize());
-        image.setBytes(file.getBytes());
-        return image;
+    public static UserPhoto instanceOf(MultipartFile file) throws IOException {
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setName(file.getName());
+        userPhoto.setOriginalFileName(file.getOriginalFilename());
+        userPhoto.setSize(file.getSize());
+        userPhoto.setBytes(file.getBytes());
+        return userPhoto;
     }
 
     public void setId(Long id) {

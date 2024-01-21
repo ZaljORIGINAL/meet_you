@@ -2,7 +2,7 @@ package ru.zalj.meetyou.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +11,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_profiles")
 public class UserProfile {
+    private final static int MAX_USER_PHOTO_COUNT = 6;
+
     @Id
     private Long id;
 
@@ -21,7 +23,7 @@ public class UserProfile {
     private String secondName;
 
     @Column(name = "date_of_birth")
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @MapsId
@@ -29,15 +31,15 @@ public class UserProfile {
     private User user;
 
     @OneToMany(cascade = CascadeType.MERGE ,fetch = FetchType.LAZY)
-    private final Set<Personality> personality = new HashSet<>();
+    private final Set<Personality> personalities = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "userProfile")
-    private final List<Image> images = new ArrayList<>(6);
+    private final List<UserPhoto> userPhotos = new ArrayList<>(MAX_USER_PHOTO_COUNT);
 
     public UserProfile() {
     }
 
-    public UserProfile(Long id, String firstName, String secondName, LocalDateTime dateOfBirth, User user) {
+    public UserProfile(Long id, String firstName, String secondName, LocalDate dateOfBirth, User user) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -57,7 +59,7 @@ public class UserProfile {
         return secondName;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -65,12 +67,12 @@ public class UserProfile {
         return user;
     }
 
-    public Set<Personality> getPersonality() {
-        return personality;
+    public Set<Personality> getPersonalities() {
+        return personalities;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<UserPhoto> getImages() {
+        return userPhotos;
     }
 
     public void setId(Long id) {
@@ -85,11 +87,31 @@ public class UserProfile {
         this.secondName = secondName;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean addPhoto(UserPhoto photo) {
+        if (userPhotos.size() == MAX_USER_PHOTO_COUNT) {
+            return false;
+        }
+
+        return userPhotos.add(photo);
+    }
+
+    public boolean addPersonality(Personality personality) {
+        return personalities.add(personality);
+    }
+
+    public void deleteUserPhoto(long photoId) {
+        userPhotos.removeIf(p -> p.getId() == photoId);
+    }
+
+    public void deleteUserPersonality(long personalityId) {
+        personalities.removeIf(p -> p.getId() == personalityId);
     }
 }
